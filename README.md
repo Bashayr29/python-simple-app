@@ -4,7 +4,7 @@ A simple Python web application built with [Flask](https://flask.palletsprojects
 
 ## What It Does
 
-When you visit the root URL (`/`), the app responds with:
+This app runs a small web server. Once it is running, open your browser and go to the address shown in your terminal (usually `http://localhost:5000`). You will see the following message displayed on the page:
 
 ```
 Good day folks!
@@ -36,4 +36,4 @@ Good day folks!
 python app.py
 ```
 
-The app will start in debug mode and be available at [http://127.0.0.1:5000](http://127.0.0.1:5000).
+The app will start in debug mode. Check your terminal for the address — it is usually [http://localhost:5000](http://localhost:5000).
