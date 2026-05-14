@@ -1,0 +1,48 @@
+name: Update README from app.py
+
+# Trigger whenever app.py is pushed to the default branch.
+on:
+  push:
+    branches:
+      - main
+      - master
+    paths:
+      - "app.py"
+  workflow_dispatch: {}   # allow manual runs
+
+permissions:
+  contents: write   # needed to commit the updated README
+
+jobs:
+  update-readme:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          # Fetch the full commit so the bot can push back
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Generate updated README with AI agent
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: python .github/scripts/update_readme.py
+
+      - name: Commit and push updated README
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add README.md
+          # Only commit if there are actual changes
+          if git diff --cached --quiet; then
+            echo "README.md is already up to date – nothing to commit."
+          else
+            git commit -m "docs: auto-update README from app.py [skip ci]"
+            git push
+          fi
